@@ -1,0 +1,22 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "sitio-diseno-morfologico",
+  "main": "src/index.js",
+  "compatibility_date": "2026-09-01",
+
+  // Sirve todo lo que está en public/ automáticamente (index.html, admin/index.html, etc.).
+  // Las rutas que NO coinciden con un archivo ahí (/api/..., /img/...) caen en src/index.js.
+  "assets": {
+    "directory": "./public"
+  },
+
+  // Completar el "id" después de crear el namespace de KV (paso siguiente).
+  "kv_namespaces": [
+    { "binding": "CONTENT", "id": "PEGAR_AQUI_EL_ID_DEL_NAMESPACE" }
+  ],
+
+  // Completar "bucket_name" con el nombre real que le pongas al bucket de R2.
+  "r2_buckets": [
+    { "binding": "IMAGES", "bucket_name": "PEGAR_AQUI_EL_NOMBRE_DEL_BUCKET" }
+  ]
+}
