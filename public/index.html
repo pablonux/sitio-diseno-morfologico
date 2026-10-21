@@ -14,41 +14,41 @@
      (el que empieza con #), guardás y subís el archivo.
      ===================================================================== */
   :root{
-    /* Fondo de la página (se ve detrás de la imagen y mientras ésta carga) */
-    --bg: #f982b4;
+    /* Fondo de la página */
+    --bg: #FFFFFF;
 
-    /* Paleta de los botones de temas. Se asignan en este orden y se repiten
-       cada 8: así dos botones vecinos nunca tienen el mismo color. */
-    --p1: #6AF773;
-    --p2: #5CDEFF;
-    --p3: #3B0259;
-    --p4: #E8F540;
-    --p5: #D852FA;
-    --p6: #50DECF;
-    --p7: #F5A322;
-    --p8: #6E8DFF;
+    /* Paleta de los botones de temas. Se reparten de modo que dos botones
+       vecinos (también en diagonal) nunca tengan el mismo color, sin importar
+       cuántas columnas muestre la pantalla. Podés agregar más (--p6, --p7...)
+       o sacar alguno: el sitio se adapta solo. */
+    --p1: #1B1EFF;
+    --p2: #2B0D80;
+    --p3: #9A27FF;
+    --p4: #FF1BDF;
+    --p5: #D25DEF;
 
     /* Color de los botones cuando pasás el cursor (o los tocás en el celular).
-       El texto toma el color que tenía el botón.
-       --hover-bg: para los botones claros. --hover-bg-alt: para los oscuros. */
-    --hover-bg: #3B0259;
-    --hover-bg-alt: #6AF773;
+       Botones claros: fondo --hover-bg y el texto toma el color que tenía el botón.
+       Botones oscuros: fondo --hover-bg-alt y texto --hover-alt-ink. */
+    --hover-bg: #2B0D80;
+    --hover-bg-alt: #FF1BDF;
+    --hover-alt-ink: #2B0D80;
 
     /* Textos y líneas */
-    --ink: #1B1A17;          /* texto principal */
-    --ink-soft: #3B0259;     /* texto secundario, etiquetas */
-    --ink-light: #F6EAFB;    /* texto sobre botones oscuros */
-    --accent: #3B0259;       /* links y foco de teclado */
+    --ink: #2B0D80;          /* texto principal */
+    --ink-soft: #1B1EFF;     /* texto secundario, etiquetas */
+    --ink-light: #FFFFFF;    /* texto sobre botones oscuros */
+    --accent: #1B1EFF;       /* links y foco de teclado */
     --accent-ink: #FFFFFF;
-    --line: rgba(59,2,89,0.22);
-    --line-strong: rgba(59,2,89,0.55);
-    --panel: rgba(255,255,255,0.28);   /* cajas vacías (placeholders) */
+    --line: rgba(43,13,128,0.18);
+    --line-strong: rgba(43,13,128,0.55);
+    --panel: rgba(27,30,255,0.06);   /* cajas vacías (placeholders) */
 
     --font-display: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif;
     --font-body: 'IBM Plex Sans', 'Segoe UI', Roboto, sans-serif;
   }
 
-  /* Cada botón toma uno de los 8 colores de la paleta */
+  /* Cada botón toma uno de los colores de la paleta */
   .c1{--c:var(--p1);} .c2{--c:var(--p2);} .c3{--c:var(--p3);} .c4{--c:var(--p4);}
   .c5{--c:var(--p5);} .c6{--c:var(--p6);} .c7{--c:var(--p7);} .c8{--c:var(--p8);}
 
@@ -166,7 +166,7 @@
   .overlay-list a:active,
   .overlay-list a:focus-visible{background:var(--hover-bg);color:var(--c);}
   .overlay-list a.is-dark:active,
-  .overlay-list a.is-dark:focus-visible{background:var(--hover-bg-alt);color:var(--c);}
+  .overlay-list a.is-dark:focus-visible{background:var(--hover-bg-alt);color:var(--hover-alt-ink);}
   @media (max-width:720px){ .overlay-list{grid-template-columns:repeat(2,1fr);} }
   @media (max-width:480px){ .overlay-list{grid-template-columns:1fr;} }
 
@@ -215,19 +215,9 @@
   h2.h-section{
     font-family:var(--font-display);
     font-weight:600;
+    line-height:1.15;
     font-size:clamp(1.7rem,4vw,2.3rem);
     margin:0;
-  }
-  .h-tag{
-    font-size:13px;
-    color:var(--ink-soft);
-    border:1px solid var(--line-strong);
-    padding:4px 10px;
-  }
-  p.lede{
-    font-size:19px;
-    max-width:62ch;
-    color:var(--ink);
   }
   p{max-width:66ch;}
   .two-col{
@@ -308,18 +298,18 @@
     background:var(--hover-bg);color:var(--c);z-index:1;
   }
   .theme-card.is-dark:active,
-  .theme-card.is-dark:focus-visible{background:var(--hover-bg-alt);}
+  .theme-card.is-dark:focus-visible{background:var(--hover-bg-alt);color:var(--hover-alt-ink);}
   .theme-card:active svg,
   .theme-card:focus-visible svg{transform:rotate(90deg) scale(1.25);}
   @media (hover:hover){
     .theme-card:hover{
       background:var(--hover-bg);color:var(--c);z-index:1;transform:translateY(-3px);
     }
-    .theme-card.is-dark:hover{background:var(--hover-bg-alt);}
+    .theme-card.is-dark:hover{background:var(--hover-bg-alt);color:var(--hover-alt-ink);}
     .theme-card:hover svg{transform:rotate(90deg) scale(1.25);}
     .theme-card:nth-child(even):hover svg{transform:rotate(-90deg) scale(1.25);}
     .overlay-list a:hover{background:var(--hover-bg);color:var(--c);}
-    .overlay-list a.is-dark:hover{background:var(--hover-bg-alt);}
+    .overlay-list a.is-dark:hover{background:var(--hover-bg-alt);color:var(--hover-alt-ink);}
     button.nav-toggle:hover{background:var(--hover-bg);border-color:var(--hover-bg);color:var(--bg);}
   }
 
@@ -402,11 +392,9 @@
   <!-- EXPLORACIÓN -->
   <section class="block wrap" id="exploracion">
     <div class="block-head">
-      <h2 class="h-section">Exploración</h2>
-      <span class="h-tag">Introducción</span>
+      <h2 class="h-section">Si llegaste hasta acá... es porque te picó la curiosidad</h2>
     </div>
-    <p class="lede">Nos aproximamos al fanzine, su historia y su función antes y en la actualidad, y experimentamos con diferentes formas de plegar el soporte y las maneras en que el usuario interactúa con el objeto.</p>
-    <div class="two-col" id="exploracion-cols" style="margin-top:32px;">
+    <div class="two-col" id="exploracion-cols">
       <div id="exploracion-texto"><!-- generado por JS --></div>
       <div id="exploracion-media"><!-- generado por JS: solo si hay imágenes o video --></div>
     </div>
@@ -415,11 +403,9 @@
   <!-- ÍNDICE DE SECCIONES -->
   <section class="block wrap-wide" id="secciones">
     <div class="block-head wrap" style="padding:0;max-width:920px;margin-left:auto;margin-right:auto;width:100%;">
-      <h2 class="h-section">Secciones</h2>
-      <span class="h-tag" id="countTag">Temas, uno por participante</span>
+      <h2 class="h-section">Trabajos</h2>
     </div>
-    <p class="wrap" style="max-width:920px;margin:0 auto 32px;padding-left:0;padding-right:0;">Cada participante trabajó un tema formal específico. Cada sección tiene su propia dirección web, pensada para enlazarse desde el código QR impreso junto al fanzine exhibido.</p>
-    <div class="theme-grid" id="themeGrid"><!-- generado por JS --></div>
+    <div class="theme-grid" id="themeGrid" style="margin-top:8px;"><!-- generado por JS --></div>
   </section>
 
   <!-- DETALLE DE CADA TEMA -->
@@ -470,12 +456,14 @@
   }
 
   // ---- colores de los botones ----
-  var CANT_COLORES = 8; // --p1 ... --p8 en la parte de arriba del archivo
+  // La paleta se lee de --p1, --p2, ... (arriba de todo, en la parte de CSS).
   var paleta = [];
   function leerPaleta(){
     var cs = getComputedStyle(document.documentElement);
-    for(var k = 1; k <= CANT_COLORES; k++){
-      paleta.push(cs.getPropertyValue('--p' + k).trim());
+    for(var k = 1; k <= 24; k++){
+      var v = cs.getPropertyValue('--p' + k).trim();
+      if(!v) break;
+      paleta.push(v);
     }
   }
   function esOscuro(hex){
@@ -487,12 +475,76 @@
     });
     return (0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2]) < 0.18;
   }
-  // Devuelve las clases de color del botón número i (se repiten cada 8,
-  // así dos vecinos nunca comparten color).
-  function claseColor(i){
-    var n = i % CANT_COLORES;
-    return 'c' + (n + 1) + (esOscuro(paleta[n] || '#ffffff') ? ' is-dark' : '');
+  function quitarColor(el){
+    for(var k = 1; k <= 24; k++) el.classList.remove('c' + k);
+    el.classList.remove('is-dark');
   }
+  function ponerColor(el, n){
+    quitarColor(el);
+    el.classList.add('c' + (n + 1));
+    if(esOscuro(paleta[n])) el.classList.add('is-dark');
+  }
+  function cantidadColumnas(grilla){
+    var t = getComputedStyle(grilla).gridTemplateColumns;
+    return (t && t !== 'none') ? t.trim().split(/\s+/).length : 1;
+  }
+  // Reparte los colores recorriendo la grilla fila por fila. Cada botón toma
+  // el siguiente color de la paleta que NO tenga ya ningún vecino que lo toque
+  // (izquierda, arriba, y las dos diagonales de arriba). Se recalcula si cambia
+  // la cantidad de columnas (por ejemplo al girar el celular).
+  function repartirColores(items, cols){
+    var n = paleta.length, asignado = [];
+    if(!n) return asignado;
+    for(var i = 0; i < items.length; i++){
+      var r = Math.floor(i / cols), c = i % cols, prohibidos = [];
+      if(c > 0) prohibidos.push(asignado[i - 1]);
+      if(r > 0){
+        prohibidos.push(asignado[i - cols]);
+        if(c > 0) prohibidos.push(asignado[i - cols - 1]);
+        if(c < cols - 1) prohibidos.push(asignado[i - cols + 1]);
+      }
+      var color = i % n, intentos = 0;
+      while(prohibidos.indexOf(color) !== -1 && intentos < n){
+        color = (color + 1) % n; intentos++;
+      }
+      asignado[i] = color;
+      ponerColor(items[i], color);
+    }
+    return asignado;
+  }
+
+  var columnasGrilla = 0, columnasIndice = 0;
+  function colorearGrilla(){
+    var grilla = document.getElementById('themeGrid');
+    var cards = grilla.querySelectorAll('.theme-card');
+    if(!cards.length) return;
+    columnasGrilla = cantidadColumnas(grilla);
+    var asignado = repartirColores(cards, columnasGrilla);
+    // el cuadradito del ícono en cada tema usa el mismo color que su botón
+    Array.prototype.forEach.call(cards, function(card, i){
+      var tile = document.querySelector('.icon-tile[data-tema="' + card.getAttribute('data-tema') + '"]');
+      if(tile && asignado[i] !== undefined) ponerColor(tile, asignado[i]);
+    });
+  }
+  function colorearIndice(){
+    var lista = document.getElementById('overlayList');
+    var links = lista.querySelectorAll('a');
+    if(!links.length) return;
+    columnasIndice = cantidadColumnas(lista);
+    repartirColores(links, columnasIndice);
+  }
+  var temporizador;
+  window.addEventListener('resize', function(){
+    clearTimeout(temporizador);
+    temporizador = setTimeout(function(){
+      var g = document.getElementById('themeGrid');
+      if(g && cantidadColumnas(g) !== columnasGrilla) colorearGrilla();
+      if(document.getElementById('indexOverlay').classList.contains('open')){
+        var l = document.getElementById('overlayList');
+        if(cantidadColumnas(l) !== columnasIndice) colorearIndice();
+      }
+    }, 150);
+  });
 
   function svgWrap(inner){
     return '<svg viewBox="0 0 32 32" fill="none" stroke-width="1.6"><g stroke="currentColor">' + inner + '</g></svg>';
@@ -582,21 +634,20 @@
 
     temas.forEach(function(t, i){
       var icon = ICONS[t.id] || ICON_DEFAULT;
-      var color = claseColor(i);
       var tieneContenido = t.texto || (t.imagenes && t.imagenes.length) || ytId(t.youtubeId);
       var media = mediaHtml(t.imagenes, t.youtubeId, t.nombre);
 
-      gridHtml += '<a class="theme-card ' + color + '" href="#' + esc(t.id) + '">' +
+      gridHtml += '<a class="theme-card" data-tema="' + esc(t.id) + '" href="#' + esc(t.id) + '">' +
                     svgWrap(icon) +
                     '<span class="t-name">' + esc(t.nombre) + '</span>' +
                     '<span class="t-status">' + (tieneContenido ? 'Contenido publicado' : 'Contenido en preparación') + '</span>' +
                   '</a>';
 
-      overlayHtml += '<li><a href="#' + esc(t.id) + '" class="idx-link ' + color + '">' + esc(t.nombre) + '</a></li>';
+      overlayHtml += '<li><a href="#' + esc(t.id) + '" class="idx-link">' + esc(t.nombre) + '</a></li>';
 
       detailsHtml += '<section class="theme-detail wrap" id="' + esc(t.id) + '">' +
           '<a class="back-to-index" href="#secciones">← Índice de temas</a>' +
-          '<div class="block-head"><span class="icon-tile ' + color + '">' + svgWrap(icon) + '</span><h2 class="h-section">' + esc(t.nombre) + '</h2></div>' +
+          '<div class="block-head"><span class="icon-tile" data-tema="' + esc(t.id) + '">' + svgWrap(icon) + '</span><h2 class="h-section">' + esc(t.nombre) + '</h2></div>' +
           '<div class="two-col' + (media ? '' : ' no-media') + '">' +
             '<div>' +
               '<p>' + esc(t.texto || ('Texto pendiente — reflexión sobre ' + t.nombre + ' como principio formal del fanzine trabajado.')) + '</p>' +
@@ -609,7 +660,7 @@
     grid.innerHTML = gridHtml;
     overlayList.innerHTML = overlayHtml;
     detailsHost.innerHTML = detailsHtml;
-    document.getElementById('countTag').textContent = temas.length + ' temas, uno por participante';
+    colorearGrilla();
   }
 
   leerPaleta();
@@ -637,6 +688,7 @@
   var overlay = document.getElementById('indexOverlay');
   document.getElementById('btnIndex').addEventListener('click', function(){
     overlay.classList.add('open');
+    colorearIndice();
   });
   document.getElementById('btnClose').addEventListener('click', function(){
     overlay.classList.remove('open');
