@@ -220,19 +220,15 @@
     margin:0;
   }
   p{max-width:66ch;}
+  /* Texto arriba; fotos y video abajo, de lado a lado de la columna de contenido. */
   .two-col{
     display:grid;
-    grid-template-columns:1.1fr 1fr;
-    gap:48px;
-    align-items:start;
+    grid-template-columns:minmax(0,1fr);
+    gap:32px;
   }
-  .two-col.no-media{grid-template-columns:1fr;}
-  @media (max-width:760px){ .two-col{grid-template-columns:1fr;gap:28px;} }
 
   /* imágenes y video: solo existen en la página si hay algo cargado */
-  .media-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-  .media-row.single{grid-template-columns:1fr;}
-  @media (max-width:560px){ .media-row{grid-template-columns:1fr;} }
+  .media-row{display:grid;grid-template-columns:minmax(0,1fr);gap:20px;}
   .video-embed{
     position:relative;
     aspect-ratio:16/9;
@@ -242,17 +238,55 @@
   .video-embed iframe{
     position:absolute;inset:0;width:100%;height:100%;border:0;
   }
-  .gallery{
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
-    gap:8px;
-  }
-  .gallery img{
+  /* Foto sola: ocupa todo el ancho (respetando los márgenes) y mantiene su
+     proporción. Si es muy vertical, se limita a la altura de la pantalla. */
+  .gallery img,
+  .slide img{
+    display:block;
     width:100%;
-    aspect-ratio:1;
-    object-fit:cover;
+    height:auto;
+    max-height:85vh;
+    object-fit:contain;
+    border:0;
+  }
+
+  /* Carrusel: varias fotos, una a la vez, con flechas. */
+  .carousel{outline:none;}
+  .car-stage{position:relative;}
+  .slide{display:none;margin:0;}
+  .slide.active{display:block;animation:slideIn 260ms ease;}
+  @keyframes slideIn{from{opacity:0;}to{opacity:1;}}
+  .car-btn{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    width:48px;
+    height:48px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:0;
+    font-family:var(--font-display);
+    font-size:22px;
+    line-height:1;
+    color:var(--ink);
+    background:var(--bg);
     border:1px solid var(--line-strong);
-    cursor:zoom-in;
+    cursor:pointer;
+    transition:background 160ms ease, color 160ms ease;
+  }
+  .car-btn.prev{left:12px;}
+  .car-btn.next{right:12px;}
+  .car-btn:active,
+  .car-btn:focus-visible{background:var(--hover-bg);color:var(--bg);}
+  .car-count{
+    text-align:center;
+    font-size:13px;
+    color:var(--ink-soft);
+    margin-top:10px;
+  }
+  @media (hover:hover){
+    .car-btn:hover{background:var(--hover-bg);color:var(--bg);}
   }
 
   /* ---------- grilla de temas ---------- */
@@ -569,11 +603,60 @@
            '" title="Video" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>';
   }
 
+  // Una sola foto: va de lado a lado. Varias: carrusel con flechas, de a una.
   function galleryHtml(imagenes, altBase){
-    return '<div class="gallery">' + imagenes.map(function(url, i){
-      return '<img src="' + esc(url) + '" alt="' + esc(altBase) + ' — foto ' + (i+1) + '" loading="lazy">';
-    }).join('') + '</div>';
+    function img(url, i){
+      return '<img src="' + esc(url) + '" alt="' + esc(altBase) + ' — foto ' + (i + 1) + '" loading="lazy">';
+    }
+    if(imagenes.length === 1){
+      return '<div class="gallery">' + img(imagenes[0], 0) + '</div>';
+    }
+    return '<div class="carousel" tabindex="0" role="group" aria-roledescription="carrusel" aria-label="Fotos de ' + esc(altBase) + '">' +
+             '<div class="car-stage">' +
+               imagenes.map(function(url, i){
+                 return '<figure class="slide' + (i === 0 ? ' active' : '') + '">' + img(url, i) + '</figure>';
+               }).join('') +
+               '<button type="button" class="car-btn prev" aria-label="Foto anterior">←</button>' +
+               '<button type="button" class="car-btn next" aria-label="Foto siguiente">→</button>' +
+             '</div>' +
+             '<div class="car-count" aria-live="polite">1 / ' + imagenes.length + '</div>' +
+           '</div>';
   }
+
+  // ---- carrusel: flechas, teclado y deslizar con el dedo ----
+  function moverCarrusel(carrusel, paso){
+    var slides = carrusel.querySelectorAll('.slide');
+    var actual = 0;
+    Array.prototype.forEach.call(slides, function(sl, i){ if(sl.classList.contains('active')) actual = i; });
+    var nuevo = (actual + paso + slides.length) % slides.length;
+    slides[actual].classList.remove('active');
+    slides[nuevo].classList.add('active');
+    carrusel.querySelector('.car-count').textContent = (nuevo + 1) + ' / ' + slides.length;
+  }
+  document.addEventListener('click', function(e){
+    var btn = e.target.closest && e.target.closest('.car-btn');
+    if(!btn) return;
+    moverCarrusel(btn.closest('.carousel'), btn.classList.contains('next') ? 1 : -1);
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+    var c = e.target.closest && e.target.closest('.carousel');
+    if(c) moverCarrusel(c, e.key === 'ArrowRight' ? 1 : -1);
+  });
+  var toqueX = null, toqueY = null;
+  document.addEventListener('touchstart', function(e){
+    if(e.target.closest && e.target.closest('.carousel') && e.touches.length === 1){
+      toqueX = e.touches[0].clientX; toqueY = e.touches[0].clientY;
+    } else { toqueX = null; }
+  }, { passive: true });
+  document.addEventListener('touchend', function(e){
+    if(toqueX === null) return;
+    var c = e.target.closest && e.target.closest('.carousel');
+    var t = e.changedTouches[0];
+    var dx = t.clientX - toqueX, dy = t.clientY - toqueY;
+    toqueX = null;
+    if(c && Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.5) moverCarrusel(c, dx < 0 ? 1 : -1);
+  }, { passive: true });
 
   // Imágenes y video solo se dibujan si hay algo cargado.
   // Devuelve '' si no hay nada: en ese caso no queda ningún cuadro vacío.
